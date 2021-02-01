@@ -1,0 +1,8 @@
+{
+  "name": "lambda-with-container",
+  "description": "Sample node lambda with container type as packaging",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  PullMarkets:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: testnode12lambda
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+        - TestNode12LambdaRole
+        - Arn
+      CodeUri: s3://my-lambda-functions-jenson/PullMarketCode/e90b629fbdeab71ae74bd2f0e604a3cd
+      Runtime: nodejs12.x
+      Timeout: 300
+  TestNode12LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: TestNode12LambdaRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: AWSLambdaBasicExecutionRole
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource: '*'

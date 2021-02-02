@@ -1,17 +1,16 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  PullMarkets:
+  TestNode12Lambda:
     Type: AWS::Serverless::Function
     Properties:
+      PackageType: Image
       FunctionName: testnode12lambda
-      Handler: index.handler
       Role:
         Fn::GetAtt:
-          - TestNode12LambdaRole
-          - Arn
-      CodeUri: "./"
-      Runtime: nodejs12.x
+        - TestNode12LambdaRole
+        - Arn
+      ImageUri: {aws_account_id}.dkr.ecr.us-east-1.amazonaws.com/lambda-container:latest
       Timeout: 300
   TestNode12LambdaRole:
     Type: AWS::IAM::Role
@@ -20,30 +19,21 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - sts:AssumeRole
-      Path: "/"
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
       Policies:
-        - PolicyName: AWSLambdaBasicExecutionRole
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: "*"
-#        - PolicyName: AmazonS3FullAccess
-#          PolicyDocument:
-#            Version: '2012-10-17'
-#            Statement:
-#              - Effect: Allow
-#                Action: s3:*
-#                Resource:
-#                  - arn:aws:s3:::lambda-cft-jenson
-#                  - arn:aws:s3:::lambda-cft-jenson/*
+      - PolicyName: AWSLambdaBasicExecutionRole
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource: '*'
